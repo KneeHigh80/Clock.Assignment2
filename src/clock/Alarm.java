@@ -53,5 +53,19 @@ public class Alarm implements Comparable<Alarm> {
     }
     
     
+    @Override
+    public int compareTo(Alarm other) {
+        if(this.hours != other.hours) {
+            return this.hours - other.hours;
+        } else if (this.minutes != other.minutes) {
+            return this.minutes - other.minutes;
+        } else {
+            return this.seconds - other.seconds;
+        }
+    }
     
+    @Override
+    public String toString() {
+        return String.format("Alarm[%02d:%02d:%02d] - %s", hours, minutes, seconds, label);
+    }
 }
