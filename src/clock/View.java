@@ -7,7 +7,18 @@ import java.util.Observable;
 
 public class View implements Observer {
     
-    ClockPanel panel;
+    private ClockPanel panel;
+    
+    private JMenuItem setAlarmMenuItem;
+    private JMenuItem editAlarmMenuItem;
+    private JMenuItem deleteAlarmMenuItem;
+    private JMenuItem saveAlarmsMenuItem;
+    private JMenuItem loadAlarmsMenuItem;
+    
+    private JButton setAlarmButton;
+    private JButton editAlarmButton;
+    private JButton deleteAlarmButton;
+    
     
     public View(Model model) {
         JFrame frame = new JFrame();
@@ -28,20 +39,41 @@ public class View implements Observer {
         
         Container pane = frame.getContentPane();
         
-        JButton button = new JButton("Button 1 (PAGE_START)");
-        pane.add(button, BorderLayout.PAGE_START);
-         
+        // creating the menu bar
+        JMenuBar menuBar = new JMenuBar();
+        JMenu alarmMenu = new JMenu("Alarms");
+        
+        setAlarmMenuItem = new JMenuItem("Set Alarm");
+        editAlarmMenuItem = new JMenuItem("Edit Alarm");
+        deleteAlarmMenuItem = new JMenuItem("Delete Alarm");
+        saveAlarmsMenuItem = new JMenuItem("Save Alarms");
+        loadAlarmsMenuItem = new JMenuItem("Load Alarms");
+        
+        alarmMenu.add(setAlarmMenuItem);
+        alarmMenu.add(editAlarmMenuItem);
+        alarmMenu.add(deleteAlarmMenuItem);
+        alarmMenu.add(saveAlarmsMenuItem);
+        alarmMenu.add(loadAlarmsMenuItem);
+        
+        menuBar.add(alarmMenu);
+        
+        frame.setJMenuBar(menuBar);
+        
+        
+        // Adding Buttons for setting Alarms
+        setAlarmButton = new JButton("Set Alarm");
+        editAlarmButton = new JButton("Edit Alarm");
+        deleteAlarmButton = new JButton("Delete Alarm");
+        
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3));
+        buttonPanel.add(setAlarmButton);
+        buttonPanel.add(editAlarmButton);
+        buttonPanel.add(deleteAlarmButton);
+        
+        pane.add(buttonPanel, BorderLayout.PAGE_START);
+        
         panel.setPreferredSize(new Dimension(200, 200));
         pane.add(panel, BorderLayout.CENTER);
-         
-        button = new JButton("Button 3 (LINE_START)");
-        pane.add(button, BorderLayout.LINE_START);
-         
-        button = new JButton("Long-Named Button 4 (PAGE_END)");
-        pane.add(button, BorderLayout.PAGE_END);
-         
-        button = new JButton("5 (LINE_END)");
-        pane.add(button, BorderLayout.LINE_END);
         
         // End of borderlayout code
         
@@ -52,4 +84,42 @@ public class View implements Observer {
     public void update(Observable o, Object arg) {
         panel.repaint();
     }
+    
+    // Getters for MenuItems
+    
+    public JMenuItem getSetAlarmMenuItem() {
+        return setAlarmMenuItem;
+    }
+
+    public JMenuItem getEditAlarmMenuItem() {
+        return editAlarmMenuItem;
+    }
+
+    public JMenuItem getDeleteAlarmMenuItem() {
+        return deleteAlarmMenuItem;
+    }
+
+    public JMenuItem getSaveAlarmsMenuItem() {
+        return saveAlarmsMenuItem;
+    }
+
+    public JMenuItem getLoadAlarmsMenuItem() {
+        return loadAlarmsMenuItem;
+    }
+    
+    //getters for Buttons
+
+    public JButton getSetAlarmButton() {
+        return setAlarmButton;
+    }
+
+    public JButton getEditAlarmButton() {
+        return editAlarmButton;
+    }
+
+    public JButton getDeleteAlarmButton() {
+        return deleteAlarmButton;
+    }
+    
+    
 }
