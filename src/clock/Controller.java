@@ -1,7 +1,10 @@
 package clock;
 
 import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 public class Controller {
@@ -110,5 +113,12 @@ public class Controller {
     
     private void triggerAlarm(Alarm alarm) {
         JOptionPane.showMessageDialog(null, "Alarm: " + alarm.getLabel(), "Alarm", JOptionPane.INFORMATION_MESSAGE);
+        
+        JFrame alarmFrame = new JFrame("Alarm triggered!");
+        JLabel label = new JLabel("Alarm: " + alarm.getLabel() + " has gone off!", SwingConstants.CENTER);
+        alarmFrame.add(label);
+        alarmFrame.setSize(300, 100);
+        alarmFrame.setLocationRelativeTo(null);
+        alarmFrame.setVisible(true);
     }
 }

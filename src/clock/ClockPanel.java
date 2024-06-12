@@ -72,8 +72,7 @@ public class ClockPanel extends JPanel {
             double height = msgbounds.getHeight();
             double width = msgbounds.getWidth();
             
-            gg.drawString(s, (new Float(x1 - width/2)).floatValue(), 
-                          (new Float(y1 + height/2 - descent)).floatValue());
+            gg.drawString(s, (float) (x1 - width/2), (float)(y1 + height/2 - descent));
         }
         
         // Draw the hour hand
@@ -105,7 +104,8 @@ public class ClockPanel extends JPanel {
         if (nextAlarm != null) {
             gg.setColor(Color.blue);
             gg.setStroke(new BasicStroke(1.5f));
-            theta = (90 - (nextAlarm.getHours() + nextAlarm.getMinutes() / 60.0) * 30) / (180 / Math.PI);
+            //theta = (90 - ((nextAlarm.getHours() + nextAlarm.getMinutes() / 60.0) * 30)) / (180 / Math.PI);
+            theta = (90 - ((nextAlarm.getHours() % 12) * 30 + nextAlarm.getMinutes() * 0.5 + nextAlarm.getSeconds() * (0.5 / 60))) / (180 / Math.PI);
             radius = 0.6 * size;
             x1 = x0 + radius * Math.cos(theta);
             y1 = y0 + radius * Math.sin(theta);
