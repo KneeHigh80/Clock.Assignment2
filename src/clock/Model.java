@@ -6,7 +6,6 @@ import queuemanager.PriorityQueue;
 import queuemanager.UnsortedArrayPriorityQueue;
 import queuemanager.QueueOverflowException;
 import queuemanager.QueueUnderflowException;
-//import java.util.GregorianCalendar;
 
 public class Model extends Observable {
     
@@ -25,7 +24,7 @@ public class Model extends Observable {
     
     public void update() {
         Calendar date = Calendar.getInstance();
-        hour = date.get(Calendar.HOUR);
+        hour = date.get(Calendar.HOUR_OF_DAY);
         minute = date.get(Calendar.MINUTE);
         oldSecond = second;
         second = date.get(Calendar.SECOND);
@@ -69,6 +68,18 @@ public class Model extends Observable {
         } catch (QueueUnderflowException e) {
             return null;
         }
+    }
+    
+    //updating an alarm
+    public void updateAlarm(Alarm alarm) {
+        try {
+            alarmQueue.remove();
+            alarmQueue.add(alarm, alarm.getHours() * 3600 + alarm.getMinutes() * 60 + alarm.getSeconds());
+        } catch (QueueUnderflowException | QueueOverflowException e) {
+            e.printStackTrace();
+        }
+        setChanged();
+        notifyObservers();
     }
     
     // Method to trigger alarm 

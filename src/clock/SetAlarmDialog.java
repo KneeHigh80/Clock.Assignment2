@@ -18,37 +18,49 @@ public class SetAlarmDialog extends JDialog {
     private JButton setButton;
     private Alarm alarm;
 
-    public SetAlarmDialog(JFrame parent) {
-        super(parent, "Set Alarm", true);
+    public SetAlarmDialog(JFrame parent, Alarm alarm) {
+        super(parent,(alarm == null ? "Set Alarm" : "Edit Alarm"), true);
+        this.alarm = alarm;
         setLayout(new GridLayout(5, 2));
         
-        add(new JLabel("Hour"));
-        hourField = new JTextField();
+        add(new JLabel("Hour:"));
+        hourField = new JTextField(alarm != null ? String.valueOf(alarm.getHours()) : "");
         add(hourField);
         
-        add(new JLabel("Minute"));
-        minuteField = new JTextField();
+        add(new JLabel("Minute:"));
+        minuteField = new JTextField(alarm != null ? String.valueOf(alarm.getMinutes()) : "");
         add(minuteField);
         
-        add(new JLabel("Second"));
-        secondField = new JTextField();
+        add(new JLabel("Second:"));
+        secondField = new JTextField(alarm != null ? String.valueOf(alarm.getSeconds()) : "");
         add(secondField);
         
-        add(new JLabel("Label"));
-        labelField = new JTextField();
+        add(new JLabel("Label:"));
+        labelField = new JTextField(alarm != null ? alarm.getLabel() : "");
         add(labelField);
         
-        setButton = new JButton("Set Alarm");
+        setButton = new JButton(alarm != null ? "Edit Alarm" : "Set Alarm");
         add(setButton);
         setButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                int hours = Integer.parseInt(hourField.getText());
-                int minutes = Integer.parseInt(minuteField.getText());
-                int seconds = Integer.parseInt(secondField.getText());
-                String label = labelField.getText();
-                alarm = new Alarm(hours, minutes, seconds, label);
-                dispose();
+                try {
+                    int hours = Integer.parseInt(hourField.getText());
+                    int minutes = Integer.parseInt(minuteField.getText());
+                    int seconds = Integer.parseInt(secondField.getText());
+                    String label = labelField.getText();
+                    if (SetAlarmDialog.this.alarm == null) {
+                        SetAlarmDialog.this.alarm = new Alarm(hours, minutes, seconds, label);
+                    } else {
+                        SetAlarmDialog.this.alarm.setHours(hours);
+                        SetAlarmDialog.this.alarm.setMinutes(minutes);
+                        SetAlarmDialog.this.alarm.setSeconds(seconds);
+                        SetAlarmDialog.this.alarm.setLabel(label);
+                    }
+                    dispose();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(SetAlarmDialog.this, "Please enter valid numbers for time.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         
