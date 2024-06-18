@@ -8,6 +8,7 @@ import java.util.Observable;
 public class View implements Observer {
     
     private ClockPanel panel;
+    private JFrame frame;
     
     private JMenuItem setAlarmMenuItem;
     private JMenuItem editAlarmMenuItem;
@@ -21,7 +22,7 @@ public class View implements Observer {
     
     
     public View(Model model) {
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         panel = new ClockPanel(model);
         //frame.setContentPane(panel);
         frame.setTitle("Java Clock");
@@ -121,5 +122,9 @@ public class View implements Observer {
         return deleteAlarmButton;
     }
     
+    // getter for the frame
+    public JFrame getFrame() {
+        return frame;
+    }
     
 }

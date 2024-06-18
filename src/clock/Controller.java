@@ -1,11 +1,8 @@
 package clock;
 
 import java.awt.event.*;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
-import javax.swing.Timer;
+import javax.swing.*;
+import java.io.*;
 
 public class Controller {
     
@@ -68,6 +65,18 @@ public class Controller {
                 showDeleteAlarmDialog();
             }
         });
+        
+        view.getSaveAlarmsMenuItem().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                saveAlarmsToFile();
+            }
+        });
+
+        view.getLoadAlarmsMenuItem().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loadAlarmsFromFile();
+            }
+        });
     }
     
     private void showSetAlarmDialog(Alarm alarm) {
@@ -120,5 +129,31 @@ public class Controller {
         alarmFrame.setSize(300, 100);
         alarmFrame.setLocationRelativeTo(null);
         alarmFrame.setVisible(true);
+    }
+    
+    private void saveAlarmsToFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        int option = fileChooser.showSaveDialog(view.getFrame());
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
+                model.saveAlarmsFile(file);
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void loadAlarmsFromFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        int option = fileChooser.showOpenDialog(view.getFrame());
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
+                model.loadAlarmsFromFile(file);
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
