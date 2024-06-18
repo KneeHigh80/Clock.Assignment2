@@ -1,6 +1,9 @@
 package clock;
 
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Observable;
 import queuemanager.PriorityQueue;
 import queuemanager.UnsortedArrayPriorityQueue;
@@ -102,5 +105,71 @@ public class Model extends Observable {
         }
         setChanged();
         notifyObservers();
+    }
+    
+    public void saveAlarmsFile(File file) throws IOException {
+        BufferedWriter writer = null;
+        List<Alarm> tempAlarms = new ArrayList<>();
+        
+        try {
+            while (!alarmQueue.isEmpty()) {
+                Alarm alarm = alarmQueue.head();
+                tempAlarms.add(alarm);
+                alarmQueue.remove();
+            }
+            
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write("BEGIN:VCALENDAR\nVERSION:2.0\n");
+            for (Alarm alarm : tempAlarms) {
+                writer.write(alarm.toICalendar());
+            }
+            writer.write("END:VCALENDAR\n");
+        } catch (IOException | QueueUnderflowException e) {
+            e.printStackTrace();
+            throw new IOException("Error while saving Alarm to file.", e);
+        }finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            for (Alarm alarm : tempAlarms) {
+                try {
+                    alarmQueue.add(alarm, alarm.getHours() * 3600 + alarm.getMinutes() * 60 + alarm.getSeconds());
+                }catch (QueueOverflowException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    public void loadAlarmsFromFile(File file) throws IOException {
+        alarmQueue = new UnsortedArrayPriorityQueue<>(10);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+            String line;
+            Alarm alarm = null;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("BEGIN:VEVENT")) {
+                    alarm = new Alarm(0, 0, 0, "");
+                } else if (line.startsWith("SUMMARY:")) {
+                    if (alarm != null) alarm.setLabel(line.substring(8));
+                } else if (line.startsWith("DTSTART:")) {
+                    if (alarm != null) {
+                        String time = line.substring(8);
+                        int hours = Integer.parseInt(time.substring(0,2));
+                        int minutes = Integer.parseInt(time.substring(2, 4));
+                        int seconds = Integer.parseInt(time.substring(4, 6));
+                        alarm.setHours(hours);
+                        alarm.setMinutes(minutes);
+                        alarm.setSeconds(seconds);
+                    }
+                }else if (line.startsWith("END:VEVENT")) {
+                    if (alarm != null) addAlarm(alarm);
+                }
+            }
+        }
     }
 }
