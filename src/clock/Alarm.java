@@ -68,4 +68,17 @@ public class Alarm implements Comparable<Alarm> {
     public String toString() {
         return String.format("Alarm[%02d:%02d:%02d] - %s", hours, minutes, seconds, label);
     }
+    
+    
+    public String toICalendar() {
+        return "BEGIN:VEVENT\n" +
+                "SUMMARY:" + label + "\n" +
+                String.format("DTSTART:%02d%02d%02d\n", hours, minutes, seconds) +
+                "BEGIN:VALARM\n" +
+                "TRIGGER:-PTOH" + String.format("%02dM%02dS", minutes, seconds) + "\n" +
+                "ACTION:DISPLAY\n" +
+                "DESCRIPTION:" + label + "\n" +
+                "END:VALARM\n" +
+                "END:VEVENT\n";
+    }
 }
