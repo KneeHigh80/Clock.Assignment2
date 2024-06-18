@@ -3,6 +3,7 @@ package clock;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
+import java.util.Calendar;
 
 public class Controller {
     
@@ -114,7 +115,8 @@ public class Controller {
     
     private void checkAlarms() {
         Alarm nextAlarm = model.getNextAlarm();
-        if (nextAlarm != null && model.isTimeToTriggerAlarm(nextAlarm)) {
+        Calendar now = Calendar.getInstance();
+        if (nextAlarm != null && model.isTimeToTriggerAlarm(nextAlarm, now)) {
             triggerAlarm(nextAlarm);
             model.removeAlarm(nextAlarm);
         }

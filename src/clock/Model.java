@@ -86,16 +86,20 @@ public class Model extends Observable {
     }
     
     // Method to trigger alarm 
-    public boolean isTimeToTriggerAlarm(Alarm alarm) {
-        Calendar now = Calendar.getInstance();
+    public boolean isTimeToTriggerAlarm(Alarm alarm, Calendar now) {
+        //Calendar now = Calendar.getInstance();
         int currentHour = now.get(Calendar.HOUR_OF_DAY);
         int currentMinute = now.get(Calendar.MINUTE);
         int currentSecond = now.get(Calendar.SECOND);
         
+        // Debug output
+        System.out.println("isTimeToTriggerAlarm - Current Time: " + currentHour + ":" + currentMinute + ":" + currentSecond);
+        System.out.println("isTimeToTriggerAlarm - Alarm Time: " + alarm.getHours() + ":" + alarm.getMinutes() + ":" + alarm.getSeconds());
+    
         return alarm.getHours() == currentHour &&
-               alarm.getMinutes() == currentMinute &&
-               alarm.getSeconds() == currentSecond;
-    }
+                alarm.getMinutes() == currentMinute &&
+                alarm.getSeconds() == currentSecond;
+}
     
     public void removeAlarm (Alarm alarm) {
         try {
