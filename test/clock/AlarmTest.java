@@ -52,12 +52,12 @@ public class AlarmTest {
     @Test
     public void testToICalendar() {
         String expected = "BEGIN:VEVENT\n" +
-                          "SUMMARY:Morning Alarm\n" +
+                          "SUMMARY:Test Alarm\n" +
                           "DTSTART:073000\n" +
                           "BEGIN:VALARM\n" +
-                          "TRIGGER:-PT00H30M00S\n" +
+                          "TRIGGER:-PT07H30M00S\n" +
                           "ACTION:DISPLAY\n" +
-                          "DESCRIPTION:Morning Alarm\n" +
+                          "DESCRIPTION:Test Alarm\n" +
                           "END:VALARM\n" +
                           "END:VEVENT\n";
         assertEquals(expected, alarm.toICalendar());
