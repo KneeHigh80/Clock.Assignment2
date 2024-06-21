@@ -99,7 +99,7 @@ public class Controller {
      * @param alarm the alarm to edit, or null to set a new alarm
      */
     private void showSetAlarmDialog(Alarm alarm) {
-        SetAlarmDialog dialog = new SetAlarmDialog(null, alarm);
+        AlarmDialog dialog = new AlarmDialog(null, alarm);
         dialog.setVisible(true);
         Alarm result = dialog.getAlarm();
         if (result != null) {

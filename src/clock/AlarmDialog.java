@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  *
  * @author lukas
  */
-public class SetAlarmDialog extends JDialog {
+public class AlarmDialog extends JDialog {
     private JTextField hourField;
     private JTextField minuteField;
     private JTextField secondField;
@@ -18,7 +18,7 @@ public class SetAlarmDialog extends JDialog {
     private JButton setButton;
     private Alarm alarm;
 
-    public SetAlarmDialog(JFrame parent, Alarm alarm) {
+    public AlarmDialog(JFrame parent, Alarm alarm) {
         super(parent,(alarm == null ? "Set Alarm" : "Edit Alarm"), true);
         this.alarm = alarm;
         setLayout(new GridLayout(5, 2));
@@ -49,17 +49,17 @@ public class SetAlarmDialog extends JDialog {
                     int minutes = Integer.parseInt(minuteField.getText());
                     int seconds = Integer.parseInt(secondField.getText());
                     String label = labelField.getText();
-                    if (SetAlarmDialog.this.alarm == null) {
-                        SetAlarmDialog.this.alarm = new Alarm(hours, minutes, seconds, label);
+                    if (AlarmDialog.this.alarm == null) {
+                        AlarmDialog.this.alarm = new Alarm(hours, minutes, seconds, label);
                     } else {
-                        SetAlarmDialog.this.alarm.setHours(hours);
-                        SetAlarmDialog.this.alarm.setMinutes(minutes);
-                        SetAlarmDialog.this.alarm.setSeconds(seconds);
-                        SetAlarmDialog.this.alarm.setLabel(label);
+                        AlarmDialog.this.alarm.setHours(hours);
+                        AlarmDialog.this.alarm.setMinutes(minutes);
+                        AlarmDialog.this.alarm.setSeconds(seconds);
+                        AlarmDialog.this.alarm.setLabel(label);
                     }
                     dispose();
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(SetAlarmDialog.this, "Please enter valid numbers for time.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(AlarmDialog.this, "Please enter valid numbers for time.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
